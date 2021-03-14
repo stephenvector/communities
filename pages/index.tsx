@@ -15,6 +15,7 @@ const Home: React.FC<HomePageData> = ({ posts, communities, users }) => {
           : post.userId;
         return (
           <PostListing
+            key={postId}
             post={post}
             postId={postId}
             community={postCommunity}
