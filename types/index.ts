@@ -19,7 +19,7 @@ export type UserProfile = {
 export type Comment = {
   communityId: string;
   comment: string;
-  date: Date;
+  date: Date | string;
   userId: string;
   postId: string;
 };
