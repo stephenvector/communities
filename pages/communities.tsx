@@ -14,9 +14,10 @@ const Communities: React.FC<{
 
       {Object.entries(communities).map(([communityId, community]) => (
         <Box key={communityId}>
-          <Link href={`/communities/${communityId}`}>
-            <h3>{community.name}</h3>
-          </Link>
+          <h3>
+            <Link href={`/communities/${communityId}`}>{community.name}</Link>
+          </h3>
+
           <div>{community.description}</div>
         </Box>
       ))}
