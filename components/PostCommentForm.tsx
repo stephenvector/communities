@@ -16,7 +16,7 @@ const PostCommentForm: React.FC<PostCommentFormProps> = ({
   communityId,
 }) => {
   const { signedIn, currentUser } = useAuth();
-  const { handleSubmit, register, formState } = useForm<{
+  const { handleSubmit, register, formState, reset } = useForm<{
     comment: string;
   }>({
     defaultValues: {
@@ -35,9 +35,10 @@ const PostCommentForm: React.FC<PostCommentFormProps> = ({
           date: firebase.firestore.Timestamp.now().toDate(),
         };
         await firebase.firestore().collection("comments").doc().set(newComment);
+        reset();
       }
     },
-    [currentUser, postId, communityId]
+    [currentUser, postId, communityId, reset]
   );
 
   if (!signedIn) return <div>Sign In to leave a comment</div>;
