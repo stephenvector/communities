@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Comment } from "../types";
-import Box from "./Box";
+import { Box, DisplayDate } from "./";
 
 type PostCommentsListProps = {
   postId: string;
@@ -37,10 +37,14 @@ const PostCommentsList: React.FC<PostCommentsListProps> = ({ postId }) => {
   return (
     <div>
       {Object.entries(comments)
-        .sort(([commentId, comment]) => comment.date.valueOf())
+        .sort(([commentId, comment]) => {
+          return new Date(comment.date).valueOf() * -1;
+        })
         .map(([commentId, comment]) => (
           <Box key={commentId}>
-            <div>{comment.date.toLocaleDateString()}</div>
+            <div>
+              <DisplayDate dateToDisplay={comment.date} />
+            </div>
             {comment.comment}
           </Box>
         ))}
