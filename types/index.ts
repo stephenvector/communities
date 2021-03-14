@@ -1,3 +1,6 @@
+import firebase from "firebase/app";
+import "firebase/firestore";
+
 export type Community = {
   name: string;
   description: string;
@@ -7,7 +10,7 @@ export type Post = {
   communityId: string;
   userId: string;
   title: string;
-  date: Date;
+  date: Date | string | firebase.firestore.Timestamp;
   content: string;
 };
 
