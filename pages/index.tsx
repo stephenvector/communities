@@ -1,27 +1,37 @@
-import React, { useEffect } from "react";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import { Container } from "../components";
+import React from "react";
+import getHomePageData, { HomePageData } from "../lib/getHomePageData";
+import { Container, PostListing } from "../components";
 
-const Home: React.FC = () => {
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("posts")
-      .orderBy("date", "desc")
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-  }, []);
-
+const Home: React.FC<HomePageData> = ({ posts, communities, users }) => {
   return (
     <Container>
-      <h1>Home</h1>
+      <h1>Recent posts</h1>
+      {Object.entries(posts).map(([postId, post]) => {
+        const postCommunity = communities[post.communityId]
+          ? communities[post.communityId]
+          : undefined;
+        const userDisplayName = users[post.userId]
+          ? users[post.userId]
+          : post.userId;
+        return (
+          <PostListing
+            post={post}
+            postId={postId}
+            community={postCommunity}
+            userDisplayName={userDisplayName}
+          />
+        );
+      })}
     </Container>
   );
 };
+
+export async function getServerSideProps() {
+  const homePageData = await getHomePageData();
+
+  return {
+    props: homePageData,
+  };
+}
 
 export default Home;
