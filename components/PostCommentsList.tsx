@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Comment } from "../types";
-import { Box, DisplayDate } from "./";
+import { DisplayDate } from "./";
+
+const StyledCommentsList = styled.div`
+  background: #fff;
+  border-radius: 0.25rem;
+  border: 1px solid #ddd;
+  .comment {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  .comment-date-info {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+  .comment:last-of-type {
+    border-bottom: none;
+  }
+`;
 
 type PostCommentsListProps = {
   postId: string;
@@ -35,20 +54,20 @@ const PostCommentsList: React.FC<PostCommentsListProps> = ({ postId }) => {
   }, [postId]);
 
   return (
-    <div>
+    <StyledCommentsList>
       {Object.entries(comments)
         .sort(([commentId, comment]) => {
           return new Date(comment.date).valueOf() * -1;
         })
         .map(([commentId, comment]) => (
-          <Box key={commentId}>
-            <div>
-              <DisplayDate dateToDisplay={comment.date} />
+          <div className="comment" key={commentId}>
+            <div className="comment-date-info">
+              Comment posted on <DisplayDate dateToDisplay={comment.date} />
             </div>
-            {comment.comment}
-          </Box>
+            <div>{comment.comment}</div>
+          </div>
         ))}
-    </div>
+    </StyledCommentsList>
   );
 };
 
